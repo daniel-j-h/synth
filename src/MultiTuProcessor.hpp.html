@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>src/MultiTuProcessor.hpp</title>
+        <link rel="stylesheet" href="../code.css">
+    </head>
+    <body>
+        <div class="highlight"><pre><span id="L1" class="Ln"><span class="cp" >#</span><span class="cp" >ifndef</span> <span class="cp" >SYNTH_MULTI_TU_PROCESSOR_HPP_INCLUDED</span></span>
+<span id="L2" class="Ln"><span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >SYNTH_MULTI_TU_PROCESSOR_HPP_INCLUDED</span></span>
+<span id="L3" class="Ln"></span>
+<span id="L4" class="Ln"><a href="fileidsupport.hpp.html" ><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >"fileidsupport.hpp"</span></a></span>
+<span id="L5" class="Ln"><a href="output.hpp.html" ><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >"output.hpp"</span></a></span>
+<span id="L6" class="Ln"></span>
+<span id="L7" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >boost</span><span class="cpf" >/</span><span class="cpf" >filesystem</span><span class="cpf" >/</span><span class="cpf" >path</span><span class="cpf" >.</span><span class="cpf" >hpp</span><span class="cpf" >&gt;</span></span>
+<span id="L8" class="Ln"><a href="../lib-llvm/include/clang-c/Index.h.html" ><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >clang</span><span class="cpf" >-</span><span class="cpf" >c</span><span class="cpf" >/</span><span class="cpf" >Index</span><span class="cpf" >.</span><span class="cpf" >h</span><span class="cpf" >&gt;</span></a></span>
+<span id="L9" class="Ln"></span>
+<span id="L10" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >atomic</span><span class="cpf" >&gt;</span></span>
+<span id="L11" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >mutex</span><span class="cpf" >&gt;</span></span>
+<span id="L12" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >string</span><span class="cpf" >&gt;</span></span>
+<span id="L13" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >unordered_map</span><span class="cpf" >&gt;</span></span>
+<span id="L14" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >vector</span><span class="cpf" >&gt;</span></span>
+<span id="L15" class="Ln"></span>
+<span id="L16" class="Ln"><span class="kd" >namespace</span> <span class="def decl nn" >synth</span> <span class="p" >{</span></span>
+<span id="L17" class="Ln"></span>
+<span id="L18" class="Ln"><span class="kd" >class</span> <a href="SimpleTemplate.hpp.html#L15" class="decl nc" >SimpleTemplate</a><span class="p" >;</span></span>
+<span id="L19" class="Ln"></span>
+<span id="L20" class="Ln"><span class="kd" >namespace</span> <span class="decl nn" >fs</span> <span class="p" >=</span> <span class="nn" >boost</span><span class="p" >::</span><span class="nn" >filesystem</span><span class="p" >;</span></span>
+<span id="L21" class="Ln"></span>
+<span id="L22" class="Ln"><span class="kd" >struct</span> <span class="def decl nc" >MissingDef</span> <span class="p" >{</span></span>
+<span id="L23" class="Ln">    <a href="output.hpp.html#L110" class="nc" >HighlightedFile</a><span class="p" >*</span> <span class="def decl vi" >hlFile</span><span class="p" >;</span></span>
+<span id="L24" class="Ln">    <span class="nn" >std</span><span class="p" >::</span><span class="nc" >size_t</span> <span class="def decl vi" >markupIdx</span><span class="p" >;</span></span>
+<span id="L25" class="Ln"><span class="p" >}</span><span class="p" >;</span></span>
+<span id="L26" class="Ln"></span>
+<span id="L27" class="Ln"><span class="kd" >struct</span> <span class="def decl nc" >FileEntry</span> <span class="p" >{</span></span>
+<span id="L28" class="Ln">    <span class="nn" >std</span><span class="p" >::</span><span class="nc" >atomic_flag</span> <span class="def decl vi" >processed</span><span class="p" >;</span></span>
+<span id="L29" class="Ln">    <a href="output.hpp.html#L110" class="nc" >HighlightedFile</a> <span class="def decl vi" >hlFile</span><span class="p" >;</span></span>
+<span id="L30" class="Ln"><span class="p" >}</span><span class="p" >;</span></span>
+<span id="L31" class="Ln"></span>
+<span id="L32" class="Ln"><span class="kd" >using</span> <span class="def decl nc" >PathMap</span> <span class="p" >=</span> <span class="nn" >std</span><span class="p" >::</span><span class="nc" >vector</span><span class="p" >&lt;</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >pair</span><span class="p" >&lt;</span><a href="#L20" class="nn" >fs</a><span class="p" >::</span><span class="nc" >path</span><span class="p" >,</span> <a href="#L20" class="nn" >fs</a><span class="p" >::</span><span class="nc" >path</span><span class="p" >&gt;&gt;</span><span class="p" >;</span></span>
+<span id="L33" class="Ln"></span>
+<span id="L34" class="Ln"><span class="kd" >class</span> <span class="def decl nc" >MultiTuProcessor</span> <span class="p" >{</span></span>
+<span id="L35" class="Ln"><span class="def decl kd" >public</span><span class="p" >:</span></span>
+<span id="L36" class="Ln">    <span class="kd" >explicit</span> <a href="MultiTuProcessor.cpp.html#L46" class="decl nf" >MultiTuProcessor</a><span class="p" >(</span><a href="#L32" class="nc" >PathMap</a> <span class="kd" >const</span><span class="p" >&amp;</span> <span class="def decl nv" >rootdir_</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L37" class="Ln"></span>
+<span id="L38" class="Ln">    <span class="kt" >bool</span> <a href="MultiTuProcessor.cpp.html#L58" class="decl nf" >isFileIncluded</a><span class="p" >(</span><a href="#L20" class="nn" >fs</a><span class="p" >::</span><span class="nc" >path</span> <span class="kd" >const</span><span class="p" >&amp;</span> <span class="def decl nv" >p</span><span class="p" >)</span> <span class="kd" >const</span><span class="p" >;</span></span>
+<span id="L39" class="Ln"></span>
+<span id="L40" class="Ln">    <span class="c" >// Returns nullptr if f should be ignored.</span></span>
+<span id="L41" class="Ln">    <a href="output.hpp.html#L110" class="nc" >HighlightedFile</a> <span class="kd" >const</span><span class="p" >*</span> <a href="MultiTuProcessor.cpp.html#L85" class="decl nf" >referenceFilename</a><span class="p" >(</span><a href="../lib-llvm/include/clang-c/Index.h.html#L286" class="nc" >CXFile</a> <span class="def decl nv" >f</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L42" class="Ln"></span>
+<span id="L43" class="Ln">    <a href="output.hpp.html#L110" class="nc" >HighlightedFile</a><span class="p" >*</span> <a href="MultiTuProcessor.cpp.html#L77" class="decl nf" >prepareToProcess</a><span class="p" >(</span><a href="../lib-llvm/include/clang-c/Index.h.html#L286" class="nc" >CXFile</a> <span class="def decl nv" >f</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L44" class="Ln"></span>
+<span id="L45" class="Ln">    <span class="kt" >void</span> <span class="def decl nf" >registerDef</span><span class="p" >(</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >string</span><span class="p" >&amp;&amp;</span> <span class="def decl nv" >usr</span><span class="p" >,</span> <a href="output.hpp.html#L91" class="nc" >SourceLocation</a><span class="p" >&amp;&amp;</span> <span class="def decl nv" >def</span><span class="p" >)</span></span>
+<span id="L46" class="Ln">    <span class="p" >{</span></span>
+<span id="L47" class="Ln">        <span class="nn" >std</span><span class="p" >::</span><span class="nc" >lock_guard</span><span class="p" >&lt;</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >mutex</span><span class="p" >&gt;</span> <span class="def decl nv" >lock</span><span class="p" >(</span><a href="#L87" class="vi" >m_mut</a><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L48" class="Ln">        <a href="#L79" class="vi" >m_defs</a><span class="p" >.</span><span class="nf" >insert</span><span class="p" >(</span><span class="p" >{</span><span class="nn" >std</span><span class="p" >::</span><span class="nf" >move</span><span class="p" >(</span><a href="#L45" class="nv" >usr</a><span class="p" >)</span><span class="p" >,</span> <span class="nn" >std</span><span class="p" >::</span><span class="nf" >move</span><span class="p" >(</span><a href="#L45" class="nv" >def</a><span class="p" >)</span><span class="p" >}</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L49" class="Ln">    <span class="p" >}</span></span>
+<span id="L50" class="Ln"></span>
+<span id="L51" class="Ln">    <span class="kt" >void</span> <span class="def decl nf" >registerMissingDefLink</span><span class="p" >(</span></span>
+<span id="L52" class="Ln">        <a href="output.hpp.html#L110" class="nc" >HighlightedFile</a><span class="p" >&amp;</span> <span class="def decl nv" >file</span><span class="p" >,</span></span>
+<span id="L53" class="Ln">        <span class="nn" >std</span><span class="p" >::</span><span class="nc" >size_t</span> <span class="def decl nv" >markupIdx</span><span class="p" >,</span></span>
+<span id="L54" class="Ln">        <span class="nn" >std</span><span class="p" >::</span><span class="nc" >string</span><span class="p" >&amp;&amp;</span> <span class="def decl nv" >dstUsr</span><span class="p" >)</span></span>
+<span id="L55" class="Ln">    <span class="p" >{</span></span>
+<span id="L56" class="Ln">        <span class="nn" >std</span><span class="p" >::</span><span class="nc" >lock_guard</span><span class="p" >&lt;</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >mutex</span><span class="p" >&gt;</span> <span class="def decl nv" >lock</span><span class="p" >(</span><a href="#L87" class="vi" >m_mut</a><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L57" class="Ln">        <a href="#L82" class="vi" >m_missingDefs</a><span class="p" >[</span><span class="nn" >std</span><span class="p" >::</span><span class="nf" >move</span><span class="p" >(</span><a href="#L54" class="nv" >dstUsr</a><span class="p" >)</span><span class="p" >]</span><span class="p" >.</span><span class="nf" >push_back</span><span class="p" >(</span><span class="p" >{</span><span class="o" >&amp;</span><a href="#L52" class="nv" >file</a><span class="p" >,</span> <a href="#L53" class="nv" >markupIdx</a><span class="p" >}</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L58" class="Ln">    <span class="p" >}</span></span>
+<span id="L59" class="Ln"></span>
+<span id="L60" class="Ln">    <span class="kt" >void</span> <a href="MultiTuProcessor.cpp.html#L119" class="decl nf" >resolveMissingRefs</a><span class="p" >(</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L61" class="Ln"></span>
+<span id="L62" class="Ln">    <span class="kt" >void</span> <a href="MultiTuProcessor.cpp.html#L141" class="decl nf" >writeOutput</a><span class="p" >(</span><a href="SimpleTemplate.hpp.html#L15" class="nc" >SimpleTemplate</a> <span class="kd" >const</span><span class="p" >&amp;</span> <span class="def decl nv" >tpl</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L63" class="Ln"></span>
+<span id="L64" class="Ln"><span class="def decl kd" >private</span><span class="p" >:</span></span>
+<span id="L65" class="Ln">    <span class="kd" >using</span> <span class="def decl nc" >FileEntryMap</span> <span class="p" >=</span> <span class="nn" >std</span><span class="p" >::</span><span class="nc" >unordered_map</span><span class="p" >&lt;</span><a href="../lib-llvm/include/clang-c/Index.h.html#L304" class="nc" >CXFileUniqueID</a><span class="p" >,</span> <a href="#L27" class="nc" >FileEntry</a><span class="p" >&gt;</span><span class="p" >;</span></span>
+<span id="L66" class="Ln"></span>
+<span id="L67" class="Ln">    <a href="output.hpp.html#L98" class="nc" >Markup</a><span class="p" >&amp;</span> <a href="MultiTuProcessor.cpp.html#L135" class="decl nf" >markupFromMissingDef</a><span class="p" >(</span><a href="#L22" class="nc" >MissingDef</a> <span class="kd" >const</span><span class="p" >&amp;</span> <span class="def decl nv" >def</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L68" class="Ln"></span>
+<span id="L69" class="Ln">    <span class="c" >// Returns nullptr if f should be ignored.</span></span>
+<span id="L70" class="Ln">    <a href="#L27" class="nc" >FileEntry</a><span class="p" >*</span> <a href="MultiTuProcessor.cpp.html#L92" class="decl nf" >obtainFileEntry</a><span class="p" >(</span><a href="../lib-llvm/include/clang-c/Index.h.html#L286" class="nc" >CXFile</a> <span class="def decl nv" >f</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L71" class="Ln"></span>
+<span id="L72" class="Ln">    <a href="#L32" class="nc" >PathMap</a><span class="p" >::</span><span class="nc" >value_type</span> <span class="kd" >const</span><span class="p" >*</span> <a href="MultiTuProcessor.cpp.html#L63" class="decl nf" >getFileMapping</a><span class="p" >(</span><a href="#L20" class="nn" >fs</a><span class="p" >::</span><span class="nc" >path</span> <span class="kd" >const</span><span class="p" >&amp;</span> <span class="def decl nv" >p</span><span class="p" >)</span> <span class="kd" >const</span><span class="p" >;</span></span>
+<span id="L73" class="Ln"></span>
+<span id="L74" class="Ln"></span>
+<span id="L75" class="Ln">    <a href="#L65" class="nc" >FileEntryMap</a> <span class="def decl vi" >m_processedFiles</span><span class="p" >;</span></span>
+<span id="L76" class="Ln">    <a href="#L32" class="nc" >PathMap</a> <span class="def decl vi" >m_dirs</span><span class="p" >;</span></span>
+<span id="L77" class="Ln"></span>
+<span id="L78" class="Ln">    <span class="c" >// Maps from USRs to source location</span></span>
+<span id="L79" class="Ln">    <span class="nn" >std</span><span class="p" >::</span><span class="nc" >unordered_map</span><span class="p" >&lt;</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >string</span><span class="p" >,</span> <a href="output.hpp.html#L91" class="nc" >SourceLocation</a><span class="p" >&gt;</span> <span class="def decl vi" >m_defs</span><span class="p" >;</span></span>
+<span id="L80" class="Ln"></span>
+<span id="L81" class="Ln">    <span class="c" >// Maps from USRs to missing definitions</span></span>
+<span id="L82" class="Ln">    <span class="nn" >std</span><span class="p" >::</span><span class="nc" >unordered_map</span><span class="p" >&lt;</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >string</span><span class="p" >,</span> <span class="nn" >std</span><span class="p" >::</span><span class="nc" >vector</span><span class="p" >&lt;</span><a href="#L22" class="nc" >MissingDef</a><span class="p" >&gt;&gt;</span> <span class="def decl vi" >m_missingDefs</span><span class="p" >;</span></span>
+<span id="L83" class="Ln"></span>
+<span id="L84" class="Ln">    <span class="c" >// Common prefix of all keys in m_dirs</span></span>
+<span id="L85" class="Ln">    <a href="#L20" class="nn" >fs</a><span class="p" >::</span><span class="nc" >path</span> <span class="def decl vi" >m_rootInDir</span><span class="p" >;</span></span>
+<span id="L86" class="Ln"></span>
+<span id="L87" class="Ln">    <span class="nn" >std</span><span class="p" >::</span><span class="nc" >mutex</span> <span class="def decl vi" >m_mut</span><span class="p" >;</span></span>
+<span id="L88" class="Ln"><span class="p" >}</span><span class="p" >;</span></span>
+<span id="L89" class="Ln"></span>
+<span id="L90" class="Ln"><span class="p" >}</span> // namespace synth</span>
+<span id="L91" class="Ln"></span>
+<span id="L92" class="Ln"><span class="cp" >#</span><span class="cp" >endif</span></span>
+<span id="L93" class="Ln"><span class="cp" ></span>
+</span></pre></div>
+        <script src="../code.js"></script>
+    </body>
+</html>

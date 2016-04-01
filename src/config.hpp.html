@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>src/config.hpp</title>
+        <link rel="stylesheet" href="../code.css">
+    </head>
+    <body>
+        <div class="highlight"><pre><span id="L1" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >boost</span><span class="cpf" >/</span><span class="cpf" >config</span><span class="cpf" >.</span><span class="cpf" >hpp</span><span class="cpf" >&gt;</span></span>
+<span id="L2" class="Ln"></span>
+<span id="L3" class="Ln"><span class="cp" >#</span><span class="cp" >ifdef</span> <span class="cp" >BOOST_CLANG</span></span>
+<span id="L4" class="Ln"><span class="cp" >#</span>  <span class="cp" >define</span> <span class="cp" >SYNTH_STRINGIFY</span><span class="cp" >(</span><span class="cp" >x</span><span class="cp" >)</span> <span class="cp" >#</span><span class="cp" >x</span></span>
+<span id="L5" class="Ln"><span class="cp" >#</span>  <span class="cp" >define</span> <span class="cp" >SYNTH_DISCLANGWARN_BEGIN</span><span class="cp" >(</span><span class="cp" >w</span><span class="cp" >)</span> \</span>
+<span id="L6" class="Ln">    <span class="cp" >_Pragma</span><span class="cp" >(</span><span class="cp" >"clang diagnostic push"</span><span class="cp" >)</span> \</span>
+<span id="L7" class="Ln">    <span class="cp" >_Pragma</span><span class="cp" >(</span><a href="#L4" class="cp" >SYNTH_STRINGIFY</a><span class="cp" >(</span><span class="cp" >clang</span> <span class="cp" >diagnostic</span> <span class="cp" >ignored</span> <span class="cp" >w</span><span class="cp" >)</span><span class="cp" >)</span></span>
+<span id="L8" class="Ln"><span class="cp" >#</span>  <span class="cp" >define</span> <span class="cp" >SYNTH_DISCLANGWARN_END</span> <span class="cp" >_Pragma</span><span class="cp" >(</span><span class="cp" >"clang diagnostic pop"</span><span class="cp" >)</span></span>
+<span id="L9" class="Ln"><span class="cp" >#</span><span class="cp" >else</span></span>
+<span id="L10" class="Ln"><span class="cp" >#</span>  <span class="cp" >define</span> <span class="cp" >SYNTH_DISCLANGWARN_BEGIN</span><span class="cp" >(</span><span class="cp" >w</span><span class="cp" >)</span></span>
+<span id="L11" class="Ln"><span class="cp" >#</span>  <span class="cp" >define</span> <span class="cp" >SYNTH_DISCLANGWARN_END</span></span>
+<span id="L12" class="Ln"><span class="cp" >#</span><span class="cp" >endif</span></span>
+<span id="L13" class="Ln"><span class="cp" ></span>
+</span></pre></div>
+        <script src="../code.js"></script>
+    </body>
+</html>

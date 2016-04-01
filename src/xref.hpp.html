@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>src/xref.hpp</title>
+        <link rel="stylesheet" href="../code.css">
+    </head>
+    <body>
+        <div class="highlight"><pre><span id="L1" class="Ln"><span class="cp" >#</span><span class="cp" >ifndef</span> <span class="cp" >SYNTH_XREF_HPP_INCLUDED</span></span>
+<span id="L2" class="Ln"><span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >SYNTH_XREF_HPP_INCLUDED</span></span>
+<span id="L3" class="Ln"></span>
+<span id="L4" class="Ln"><a href="../lib-llvm/include/clang-c/Index.h.html" ><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >clang</span><span class="cpf" >-</span><span class="cpf" >c</span><span class="cpf" >/</span><span class="cpf" >Index</span><span class="cpf" >.</span><span class="cpf" >h</span><span class="cpf" >&gt;</span></a></span>
+<span id="L5" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >string</span><span class="cpf" >&gt;</span></span>
+<span id="L6" class="Ln"></span>
+<span id="L7" class="Ln"><span class="kd" >namespace</span> <span class="def decl nn" >synth</span> <span class="p" >{</span></span>
+<span id="L8" class="Ln"></span>
+<span id="L9" class="Ln"><span class="kd" >struct</span> <a href="output.hpp.html#L98" class="decl nc" >Markup</a><span class="p" >;</span></span>
+<span id="L10" class="Ln"><span class="kd" >struct</span> <a href="output.hpp.html#L91" class="decl nc" >SourceLocation</a><span class="p" >;</span></span>
+<span id="L11" class="Ln"><span class="kd" >class</span> <a href="MultiTuProcessor.hpp.html#L34" class="decl nc" >MultiTuProcessor</a><span class="p" >;</span></span>
+<span id="L12" class="Ln"></span>
+<span id="L13" class="Ln"><span class="kt" >void</span> <a href="xref.cpp.html#L16" class="decl nf" >linkCursorIfIncludedDst</a><span class="p" >(</span><a href="output.hpp.html#L98" class="nc" >Markup</a><span class="p" >&amp;</span> <span class="def decl nv" >m</span><span class="p" >,</span> <a href="../lib-llvm/include/clang-c/Index.h.html#L2389" class="nc" >CXCursor</a> <span class="def decl nv" >dst</span><span class="p" >,</span> <a href="MultiTuProcessor.hpp.html#L34" class="nc" >MultiTuProcessor</a><span class="p" >&amp;</span> <span class="def decl nv" >state</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L14" class="Ln"><span class="kt" >void</span> <a href="xref.cpp.html#L10" class="decl nf" >linkSymbol</a><span class="p" >(</span><a href="output.hpp.html#L98" class="nc" >Markup</a><span class="p" >&amp;</span> <span class="def decl nv" >m</span><span class="p" >,</span> <a href="output.hpp.html#L91" class="nc" >SourceLocation</a> <span class="kd" >const</span><span class="p" >&amp;</span> <span class="def decl nv" >sym</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L15" class="Ln"><span class="kt" >bool</span> <a href="xref.cpp.html#L29" class="decl nf" >linkInclude</a><span class="p" >(</span><a href="output.hpp.html#L98" class="nc" >Markup</a><span class="p" >&amp;</span> <span class="def decl nv" >m</span><span class="p" >,</span> <a href="../lib-llvm/include/clang-c/Index.h.html#L2389" class="nc" >CXCursor</a> <span class="def decl nv" >incCursor</span><span class="p" >,</span> <a href="MultiTuProcessor.hpp.html#L34" class="nc" >MultiTuProcessor</a><span class="p" >&amp;</span> <span class="def decl nv" >state</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L16" class="Ln"></span>
+<span id="L17" class="Ln"><span class="p" >}</span> // namespace synth</span>
+<span id="L18" class="Ln"></span>
+<span id="L19" class="Ln"><span class="cp" >#</span><span class="cp" >endif</span> <span class="cp" >// SYNTH_XREF_HPP_INCLUDED</span></span>
+<span id="L20" class="Ln"><span class="cp" ></span>
+</span></pre></div>
+        <script src="../code.js"></script>
+    </body>
+</html>

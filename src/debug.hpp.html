@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>src/debug.hpp</title>
+        <link rel="stylesheet" href="../code.css">
+    </head>
+    <body>
+        <div class="highlight"><pre><span id="L1" class="Ln"><span class="cp" >#</span><span class="cp" >ifndef</span> <span class="cp" >SYNTH_DEBUG_HPP_INCLUDED</span></span>
+<span id="L2" class="Ln"><span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >SYNTH_DEBUG_HPP_INCLUDED</span></span>
+<span id="L3" class="Ln"></span>
+<span id="L4" class="Ln"><a href="../lib-llvm/include/clang-c/Index.h.html" ><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >clang</span><span class="cpf" >-</span><span class="cpf" >c</span><span class="cpf" >/</span><span class="cpf" >Index</span><span class="cpf" >.</span><span class="cpf" >h</span><span class="cpf" >&gt;</span></a></span>
+<span id="L5" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >iosfwd</span><span class="cpf" >&gt;</span></span>
+<span id="L6" class="Ln"></span>
+<span id="L7" class="Ln"><span class="kd" >namespace</span> <span class="def decl nn" >synth</span> <span class="p" >{</span></span>
+<span id="L8" class="Ln"></span>
+<span id="L9" class="Ln"><span class="kt" >void</span> <a href="debug.cpp.html#L61" class="decl nf" >writeIndent</a><span class="p" >(</span><span class="kt" >int</span> <span class="def decl nv" >ind</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L10" class="Ln"></span>
+<span id="L11" class="Ln"><span class="c" >// If the locatio of the cursor is in f, no filename is printed.</span></span>
+<span id="L12" class="Ln"><span class="kt" >void</span> <a href="debug.cpp.html#L67" class="decl nf" >dumpSingleCursor</a><span class="p" >(</span><a href="../lib-llvm/include/clang-c/Index.h.html#L2389" class="nc" >CXCursor</a> <span class="def decl nv" >c</span><span class="p" >,</span> <span class="kt" >int</span> <span class="def decl nv" >ind</span> <span class="p" >=</span> <span class="m" >0</span><span class="p" >,</span> <a href="../lib-llvm/include/clang-c/Index.h.html#L286" class="nc" >CXFile</a> <span class="def decl nv" >f</span> <span class="p" >=</span> <span class="kc" >nullptr</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L13" class="Ln"><span class="kt" >void</span> <a href="debug.cpp.html#L94" class="decl nf" >dumpAst</a><span class="p" >(</span><a href="../lib-llvm/include/clang-c/Index.h.html#L2389" class="nc" >CXCursor</a> <span class="def decl nv" >c</span><span class="p" >,</span> <span class="kt" >int</span> <span class="def decl nv" >ind</span> <span class="p" >=</span> <span class="m" >0</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L14" class="Ln"><span class="kt" >void</span> <a href="debug.cpp.html#L8" class="decl nf" >writeLoc</a><span class="p" >(</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >ostream</span><span class="p" >&amp;</span> <span class="def decl nv" >out</span><span class="p" >,</span> <a href="../lib-llvm/include/clang-c/Index.h.html#L370" class="nc" >CXSourceLocation</a> <span class="def decl nv" >loc</span><span class="p" >,</span> <a href="../lib-llvm/include/clang-c/Index.h.html#L286" class="nc" >CXFile</a> <span class="def decl nv" >f</span> <span class="p" >=</span> <span class="kc" >nullptr</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L15" class="Ln"><span class="kt" >void</span> <a href="debug.cpp.html#L18" class="decl nf" >writeExtent</a><span class="p" >(</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >ostream</span><span class="p" >&amp;</span> <span class="def decl nv" >out</span><span class="p" >,</span> <a href="../lib-llvm/include/clang-c/Index.h.html#L382" class="nc" >CXSourceRange</a> <span class="def decl nv" >rng</span><span class="p" >,</span> <a href="../lib-llvm/include/clang-c/Index.h.html#L286" class="nc" >CXFile</a> <span class="def decl nv" >f</span> <span class="p" >=</span> <span class="kc" >nullptr</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L16" class="Ln"><span class="nn" >std</span><span class="p" >::</span><span class="nc" >ostream</span><span class="p" >&amp;</span> <a href="debug.cpp.html#L55" class="decl " ><span class="kd" >operator</span><span class="p" >&lt;&lt;</span></a> <span class="p" >(</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >ostream</span><span class="p" >&amp;</span> <span class="def decl nv" >out</span><span class="p" >,</span> <a href="../lib-llvm/include/clang-c/Index.h.html#L2389" class="nc" >CXCursor</a> <span class="def decl nv" >c</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L17" class="Ln"><span class="nn" >std</span><span class="p" >::</span><span class="nc" >ostream</span><span class="p" >&amp;</span> <a href="debug.cpp.html#L37" class="decl " ><span class="kd" >operator</span><span class="p" >&lt;&lt;</span></a> <span class="p" >(</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >ostream</span><span class="p" >&amp;</span> <span class="def decl nv" >out</span><span class="p" >,</span> <a href="../lib-llvm/include/clang-c/Index.h.html#L382" class="nc" >CXSourceRange</a> <span class="def decl nv" >rng</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L18" class="Ln"></span>
+<span id="L19" class="Ln"><span class="p" >}</span> // namespace synth</span>
+<span id="L20" class="Ln"></span>
+<span id="L21" class="Ln"><span class="cp" >#</span><span class="cp" >endif</span> <span class="cp" >// SYNTH_DEBUG_HPP_INCLUDED</span></span>
+<span id="L22" class="Ln"><span class="cp" ></span>
+</span></pre></div>
+        <script src="../code.js"></script>
+    </body>
+</html>

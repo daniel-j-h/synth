@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>src/SimpleTemplate.hpp</title>
+        <link rel="stylesheet" href="../code.css">
+    </head>
+    <body>
+        <div class="highlight"><pre><span id="L1" class="Ln"><span class="cp" >#</span><span class="cp" >ifndef</span> <span class="cp" >SYNTH_SIMPLETEMPLATE_HPP_INCLUDED</span></span>
+<span id="L2" class="Ln"><span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >SYNTH_SIMPLETEMPLATE_HPP_INCLUDED</span></span>
+<span id="L3" class="Ln"></span>
+<span id="L4" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >boost</span><span class="cpf" >/</span><span class="cpf" >utility</span><span class="cpf" >/</span><span class="cpf" >string_ref</span><span class="cpf" >.</span><span class="cpf" >hpp</span><span class="cpf" >&gt;</span> </span>
+<span id="L5" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >boost</span><span class="cpf" >/</span><span class="cpf" >variant</span><span class="cpf" >/</span><span class="cpf" >variant_fwd</span><span class="cpf" >.</span><span class="cpf" >hpp</span><span class="cpf" >&gt;</span></span>
+<span id="L6" class="Ln"></span>
+<span id="L7" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >functional</span><span class="cpf" >&gt;</span></span>
+<span id="L8" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >iosfwd</span><span class="cpf" >&gt;</span></span>
+<span id="L9" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >string</span><span class="cpf" >&gt;</span></span>
+<span id="L10" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >unordered_map</span><span class="cpf" >&gt;</span></span>
+<span id="L11" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >vector</span><span class="cpf" >&gt;</span></span>
+<span id="L12" class="Ln"></span>
+<span id="L13" class="Ln"><span class="kd" >namespace</span> <span class="def decl nn" >synth</span> <span class="p" >{</span></span>
+<span id="L14" class="Ln"></span>
+<span id="L15" class="Ln"><span class="kd" >class</span> <span class="def decl nc" >SimpleTemplate</span> <span class="p" >{</span></span>
+<span id="L16" class="Ln"><span class="def decl kd" >public</span><span class="p" >:</span></span>
+<span id="L17" class="Ln">    <span class="kd" >explicit</span> <a href="SimpleTemplate.cpp.html#L11" class="decl nf" >SimpleTemplate</a><span class="p" >(</span><span class="nn" >boost</span><span class="p" >::</span><span class="nc" >string_ref</span> <span class="def decl nv" >text</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L18" class="Ln"></span>
+<span id="L19" class="Ln">    <span class="kd" >using</span> <span class="def decl nc" >ValCallback</span> <span class="p" >=</span> <span class="nn" >std</span><span class="p" >::</span><span class="nc" >function</span><span class="p" >&lt;</span><span class="kt" >void</span><span class="p" >(</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >ostream</span><span class="p" >&amp;</span><span class="def decl p" >)</span><span class="p" >&gt;</span><span class="p" >;</span></span>
+<span id="L20" class="Ln">    <span class="kd" >using</span> <span class="def decl nc" >Val</span> <span class="p" >=</span> <span class="nn" >boost</span><span class="p" >::</span><span class="nc" >variant</span><span class="p" >&lt;</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >string</span><span class="p" >,</span> <a href="#L19" class="nc" >ValCallback</a><span class="p" >&gt;</span><span class="p" >;</span></span>
+<span id="L21" class="Ln">    <span class="kd" >using</span> <span class="def decl nc" >Context</span> <span class="p" >=</span> <span class="nn" >std</span><span class="p" >::</span><span class="nc" >unordered_map</span><span class="p" >&lt;</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >string</span><span class="p" >,</span> <a href="#L20" class="nc" >Val</a><span class="p" >&gt;</span><span class="p" >;</span></span>
+<span id="L22" class="Ln"></span>
+<span id="L23" class="Ln">    <span class="kt" >void</span> <a href="SimpleTemplate.cpp.html#L54" class="decl nf" >writeTo</a><span class="p" >(</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >ostream</span><span class="p" >&amp;</span> <span class="def decl nv" >out</span><span class="p" >,</span> <a href="#L21" class="nc" >Context</a> <span class="kd" >const</span><span class="p" >&amp;</span> <span class="def decl nv" >ctx</span><span class="p" >)</span> <span class="kd" >const</span><span class="p" >;</span></span>
+<span id="L24" class="Ln"></span>
+<span id="L25" class="Ln"></span>
+<span id="L26" class="Ln"><span class="def decl kd" >private</span><span class="p" >:</span></span>
+<span id="L27" class="Ln">    <span class="nn" >std</span><span class="p" >::</span><span class="nc" >vector</span><span class="p" >&lt;</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >string</span><span class="p" >&gt;</span> <span class="def decl vi" >m_literals</span><span class="p" >;</span></span>
+<span id="L28" class="Ln">    <span class="nn" >std</span><span class="p" >::</span><span class="nc" >vector</span><span class="p" >&lt;</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >string</span><span class="p" >&gt;</span> <span class="def decl vi" >m_insertionKeys</span><span class="p" >;</span></span>
+<span id="L29" class="Ln"><span class="p" >}</span><span class="p" >;</span></span>
+<span id="L30" class="Ln"></span>
+<span id="L31" class="Ln"><span class="p" >}</span> // namespace synth</span>
+<span id="L32" class="Ln"></span>
+<span id="L33" class="Ln"><span class="cp" >#</span><span class="cp" >endif</span> <span class="cp" >// SYNTH_SIMPLETEMPLATE_HPP_INCLUDED</span></span>
+<span id="L34" class="Ln"><span class="cp" ></span>
+</span></pre></div>
+        <script src="../code.js"></script>
+    </body>
+</html>

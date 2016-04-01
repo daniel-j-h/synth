@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>src/CgStr.hpp</title>
+        <link rel="stylesheet" href="../code.css">
+    </head>
+    <body>
+        <div class="highlight"><pre><span id="L1" class="Ln"><span class="cp" >#</span><span class="cp" >ifndef</span> <span class="cp" >SYNTH_LIBCLANG_HPP_INCLUDED</span></span>
+<span id="L2" class="Ln"><span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >SYNTH_LIBCLANG_HPP_INCLUDED</span></span>
+<span id="L3" class="Ln"></span>
+<span id="L4" class="Ln"><a href="../lib-llvm/include/clang-c/CXString.h.html" ><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >clang</span><span class="cpf" >-</span><span class="cpf" >c</span><span class="cpf" >/</span><span class="cpf" >CXString</span><span class="cpf" >.</span><span class="cpf" >h</span><span class="cpf" >&gt;</span></a></span>
+<span id="L5" class="Ln"></span>
+<span id="L6" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >cassert</span><span class="cpf" >&gt;</span></span>
+<span id="L7" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >ostream</span><span class="cpf" >&gt;</span></span>
+<span id="L8" class="Ln"><span class="cp" >#</span><span class="cp" >include</span> <span class="cpf" >&lt;</span><span class="cpf" >string</span><span class="cpf" >&gt;</span></span>
+<span id="L9" class="Ln"></span>
+<span id="L10" class="Ln"><span class="kd" >namespace</span> <span class="def decl nn" >synth</span> <span class="p" >{</span></span>
+<span id="L11" class="Ln"></span>
+<span id="L12" class="Ln"><span class="kd" >class</span> <span class="def decl nc" >CgStr</span> <span class="p" >{</span></span>
+<span id="L13" class="Ln"><span class="def decl kd" >public</span><span class="p" >:</span></span>
+<span id="L14" class="Ln">    <span class="def decl nf" >CgStr</span><span class="p" >(</span><a href="../lib-llvm/include/clang-c/CXString.h.html#L41" class="nc" >CXString</a><span class="p" >&amp;&amp;</span> <span class="def decl nv" >s</span><span class="p" >)</span></span>
+<span id="L15" class="Ln">        <span class="p" >:</span> <a href="#L62" class="vi" >m_data</a><span class="p" >(</span><a href="#L14" class="nv" >s</a><span class="p" >)</span></span>
+<span id="L16" class="Ln">    <span class="p" >{</span> <span class="p" >}</span></span>
+<span id="L17" class="Ln"></span>
+<span id="L18" class="Ln">    <span class="def decl nf" >CgStr</span><span class="p" >(</span><a href="#L12" class="nc" >CgStr</a><span class="p" >&amp;&amp;</span> <span class="def decl nv" >other</span><span class="p" >)</span></span>
+<span id="L19" class="Ln">        <span class="p" >:</span> <a href="#L62" class="vi" >m_data</a><span class="p" >(</span><span class="nn" >std</span><span class="p" >::</span><span class="nf" >move</span><span class="p" >(</span><a href="#L18" class="nv" >other</a><span class="p" >.</span><a href="#L62" class="vi" >m_data</a><span class="p" >)</span><span class="p" >)</span></span>
+<span id="L20" class="Ln">    <span class="p" >{</span></span>
+<span id="L21" class="Ln">        <a href="#L18" class="nv" >other</a><span class="p" >.</span><a href="#L62" class="vi" >m_data</a><span class="p" >.</span><a href="../lib-llvm/include/clang-c/CXString.h.html#L39" class="vi" >data</a> <span class="o" >=</span> <span class="kc" >nullptr</span><span class="p" >;</span></span>
+<span id="L22" class="Ln">    <span class="p" >}</span></span>
+<span id="L23" class="Ln"></span>
+<span id="L24" class="Ln">    <a href="#L12" class="nc" >CgStr</a><span class="p" >&amp;</span> <span class="def decl " ><span class="kd" >operator</span><span class="p" >=</span></span><span class="p" >(</span><a href="#L12" class="nc" >CgStr</a><span class="p" >&amp;&amp;</span> <span class="def decl nv" >other</span><span class="p" >)</span> <span class="p" >{</span></span>
+<span id="L25" class="Ln">        <a href="#L60" class="nf" >destroy</a><span class="p" >(</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L26" class="Ln">        <a href="#L62" class="vi" >m_data</a> <a href="../lib-llvm/include/clang-c/CXString.h.html#L38" class="p" >=</a> <span class="nn" >std</span><span class="p" >::</span><span class="nf" >move</span><span class="p" >(</span><a href="#L24" class="nv" >other</a><span class="p" >.</span><a href="#L62" class="vi" >m_data</a><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L27" class="Ln">        <a href="#L24" class="nv" >other</a><span class="p" >.</span><a href="#L62" class="vi" >m_data</a><span class="p" >.</span><a href="../lib-llvm/include/clang-c/CXString.h.html#L39" class="vi" >data</a> <span class="o" >=</span> <span class="kc" >nullptr</span><span class="p" >;</span> <span class="c" >// HACK Undocumented behavior.</span></span>
+<span id="L28" class="Ln">        <span class="cp" >assert</span>(<span class="o" >!</span><a href="#L24" class="nv" >other</a><span class="p" >.</span><a href="#L50" class="nf" >valid</a><span class="p" >(</span><span class="p" >)</span>)<span class="p" >;</span></span>
+<span id="L29" class="Ln">        <span class="k" >return</span> <span class="o" >*</span><span class="kc" >this</span><span class="p" >;</span></span>
+<span id="L30" class="Ln">    <span class="p" >}</span></span>
+<span id="L31" class="Ln"></span>
+<span id="L32" class="Ln">    <span class="def decl " ><span class="p" >~</span><span class="nf" >CgStr</span></span><span class="p" >(</span><span class="p" >)</span> <span class="p" >{</span></span>
+<span id="L33" class="Ln">        <a href="#L60" class="nf" >destroy</a><span class="p" >(</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L34" class="Ln">    <span class="p" >}</span></span>
+<span id="L35" class="Ln"></span>
+<span id="L36" class="Ln">    <span class="kt" >char</span> <span class="kd" >const</span><span class="p" >*</span> <span class="def decl nf" >get</span><span class="p" >(</span><span class="p" >)</span> <span class="kd" >const</span> <span class="p" >{</span> <span class="k" >return</span> <a href="../lib-llvm/include/clang-c/CXString.h.html#L51" class="nf" >clang_getCString</a><span class="p" >(</span><a href="#L62" class="vi" >m_data</a><span class="p" >)</span><span class="p" >;</span> <span class="p" >}</span></span>
+<span id="L37" class="Ln"></span>
+<span id="L38" class="Ln">    <span class="kt" >char</span> <span class="kd" >const</span><span class="p" >*</span> <span class="def decl nf" >gets</span><span class="p" >(</span><span class="p" >)</span> <span class="kd" >const</span></span>
+<span id="L39" class="Ln">    <span class="p" >{</span></span>
+<span id="L40" class="Ln">        <span class="kd" >auto</span> <span class="def decl nv" >s</span> <span class="p" >=</span> <a href="#L36" class="nf" >get</a><span class="p" >(</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L41" class="Ln">        <span class="k" >return</span> <a href="#L40" class="nv" >s</a> <span class="p" >?</span> <a href="#L40" class="nv" >s</a> <span class="p" >:</span> <span class="s" >""</span><span class="p" >;</span></span>
+<span id="L42" class="Ln">    <span class="p" >}</span></span>
+<span id="L43" class="Ln"></span>
+<span id="L44" class="Ln">    <span class="nn" >std</span><span class="p" >::</span><span class="nc" >string</span> <span class="def decl nf" >copy</span><span class="p" >(</span><span class="p" >)</span> <span class="kd" >const</span></span>
+<span id="L45" class="Ln">    <span class="p" >{</span></span>
+<span id="L46" class="Ln">        <span class="kd" >auto</span> <span class="def decl nv" >s</span> <span class="p" >=</span> <a href="#L36" class="nf" >get</a><span class="p" >(</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L47" class="Ln">        <span class="k" >return</span> <a href="#L46" class="nv" >s</a> <span class="p" >?</span> <a href="#L46" class="nv" >s</a> <span class="p" >:</span> <span class="nn" >std</span><span class="p" >::</span><span class="nc" >string</span><span class="p" >(</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L48" class="Ln">    <span class="p" >}</span></span>
+<span id="L49" class="Ln"></span>
+<span id="L50" class="Ln">    <span class="kt" >bool</span> <span class="def decl nf" >valid</span><span class="p" >(</span><span class="p" >)</span> <span class="kd" >const</span> <span class="p" >{</span> <span class="k" >return</span> <a href="#L62" class="vi" >m_data</a><span class="p" >.</span><a href="../lib-llvm/include/clang-c/CXString.h.html#L39" class="vi" >data</a> <span class="o" >!=</span> <span class="kc" >nullptr</span><span class="p" >;</span> <span class="p" >}</span> <span class="c" >// HACK</span></span>
+<span id="L51" class="Ln">    <span class="kt" >bool</span> <span class="def decl nf" >empty</span><span class="p" >(</span><span class="p" >)</span> <span class="kd" >const</span></span>
+<span id="L52" class="Ln">    <span class="p" >{</span></span>
+<span id="L53" class="Ln">        <span class="k" >if</span> <span class="p" >(</span><span class="o" >!</span><a href="#L50" class="nf" >valid</a><span class="p" >(</span><span class="p" >)</span><span class="p" >)</span></span>
+<span id="L54" class="Ln">            <span class="k" >return</span> <span class="kc" >true</span><span class="p" >;</span></span>
+<span id="L55" class="Ln">        <span class="kd" >auto</span> <span class="def decl nv" >s</span> <span class="p" >=</span> <a href="#L36" class="nf" >get</a><span class="p" >(</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L56" class="Ln">        <span class="k" >return</span> <span class="o" >!</span><a href="#L55" class="nv" >s</a> <span class="o" >||</span> <span class="o" >!</span><span class="o" >*</span><a href="#L55" class="nv" >s</a><span class="p" >;</span></span>
+<span id="L57" class="Ln">    <span class="p" >}</span></span>
+<span id="L58" class="Ln"></span>
+<span id="L59" class="Ln"><span class="def decl kd" >private</span><span class="p" >:</span></span>
+<span id="L60" class="Ln">    <span class="kt" >void</span> <span class="def decl nf" >destroy</span><span class="p" >(</span><span class="p" >)</span> <span class="p" >{</span> <span class="k" >if</span> <span class="p" >(</span><a href="#L50" class="nf" >valid</a><span class="p" >(</span><span class="p" >)</span><span class="p" >)</span> <a href="../lib-llvm/include/clang-c/CXString.h.html#L56" class="nf" >clang_disposeString</a><span class="p" >(</span><a href="#L62" class="vi" >m_data</a><span class="p" >)</span><span class="p" >;</span> <span class="p" >}</span></span>
+<span id="L61" class="Ln"></span>
+<span id="L62" class="Ln">    <a href="../lib-llvm/include/clang-c/CXString.h.html#L41" class="nc" >CXString</a> <span class="def decl vi" >m_data</span><span class="p" >;</span></span>
+<span id="L63" class="Ln"><span class="p" >}</span><span class="p" >;</span></span>
+<span id="L64" class="Ln"></span>
+<span id="L65" class="Ln"><span class="kd" >inline</span> <span class="nn" >std</span><span class="p" >::</span><span class="nc" >ostream</span><span class="p" >&amp;</span> <span class="def decl " ><span class="kd" >operator</span><span class="p" >&lt;&lt;</span></span> <span class="p" >(</span><span class="nn" >std</span><span class="p" >::</span><span class="nc" >ostream</span><span class="p" >&amp;</span> <span class="def decl nv" >out</span><span class="p" >,</span> <a href="#L12" class="nc" >CgStr</a> <span class="kd" >const</span><span class="p" >&amp;</span> <span class="def decl nv" >s</span><span class="p" >)</span></span>
+<span id="L66" class="Ln"><span class="p" >{</span></span>
+<span id="L67" class="Ln">    <span class="k" >return</span> <a href="#L65" class="nv" >out</a> <span class="p" >&lt;&lt;</span> <a href="#L65" class="nv" >s</a><span class="p" >.</span><a href="#L38" class="nf" >gets</a><span class="p" >(</span><span class="p" >)</span><span class="p" >;</span></span>
+<span id="L68" class="Ln"><span class="p" >}</span></span>
+<span id="L69" class="Ln"></span>
+<span id="L70" class="Ln"><span class="p" >}</span> // namespace synth</span>
+<span id="L71" class="Ln"></span>
+<span id="L72" class="Ln"><span class="cp" >#</span><span class="cp" >endif</span></span>
+<span id="L73" class="Ln"><span class="cp" ></span>
+</span></pre></div>
+        <script src="../code.js"></script>
+    </body>
+</html>

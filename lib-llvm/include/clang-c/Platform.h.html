@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>include/clang-c/Platform.h</title>
+        <link rel="stylesheet" href="../../../code.css">
+    </head>
+    <body>
+        <div class="highlight"><pre><span id="L1" class="Ln">/*===-- clang-c/Platform.h - C Index platform decls   -------------*- C -*-===*\</span>
+<span id="L2" class="Ln">|*                                                                            *|</span>
+<span id="L3" class="Ln">|*                     The LLVM Compiler Infrastructure                       *|</span>
+<span id="L4" class="Ln">|*                                                                            *|</span>
+<span id="L5" class="Ln">|* This file is distributed under the University of Illinois Open Source      *|</span>
+<span id="L6" class="Ln">|* License. See LICENSE.TXT for details.                                      *|</span>
+<span id="L7" class="Ln">|*                                                                            *|</span>
+<span id="L8" class="Ln">|*===----------------------------------------------------------------------===*|</span>
+<span id="L9" class="Ln">|*                                                                            *|</span>
+<span id="L10" class="Ln">|* This header provides platform specific macros (dllimport, deprecated, ...) *|</span>
+<span id="L11" class="Ln">|*                                                                            *|</span>
+<span id="L12" class="Ln">\*===----------------------------------------------------------------------===*/</span>
+<span id="L13" class="Ln"></span>
+<span id="L14" class="Ln"><span class="cp" >#</span><span class="cp" >ifndef</span> <span class="cp" >LLVM_CLANG_C_PLATFORM_H</span></span>
+<span id="L15" class="Ln"><span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >LLVM_CLANG_C_PLATFORM_H</span></span>
+<span id="L16" class="Ln"></span>
+<span id="L17" class="Ln"><span class="cp" >#</span><span class="cp" >ifdef</span> <span class="cp" >__cplusplus</span></span>
+<span id="L18" class="Ln"><span class="kd" >extern</span> <span class="l" >"C"</span> <span class="p" >{</span></span>
+<span id="L19" class="Ln"><span class="cp" >#</span><span class="cp" >endif</span></span>
+<span id="L20" class="Ln"></span>
+<span id="L21" class="Ln"><span class="c" >/* MSVC DLL import/export. */</span></span>
+<span id="L22" class="Ln"><span class="cp" >#</span><span class="cp" >ifdef</span> <span class="cp" >_MSC_VER</span></span>
+<span id="L23" class="Ln">  <span class="cp" >#</span><span class="cp" >ifdef</span> <span class="cp" >_CINDEX_LIB_</span></span>
+<span id="L24" class="Ln">    <span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >CINDEX_LINKAGE</span> <span class="cp" >__declspec</span><span class="cp" >(</span><span class="cp" >dllexport</span><span class="cp" >)</span></span>
+<span id="L25" class="Ln">  <span class="cp" >#</span><span class="cp" >else</span></span>
+<span id="L26" class="Ln">    <span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >CINDEX_LINKAGE</span> <span class="cp" >__declspec</span><span class="cp" >(</span><span class="cp" >dllimport</span><span class="cp" >)</span></span>
+<span id="L27" class="Ln">  <span class="cp" >#</span><span class="cp" >endif</span></span>
+<span id="L28" class="Ln"><span class="cp" >#</span><span class="cp" >else</span></span>
+<span id="L29" class="Ln">  <span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >CINDEX_LINKAGE</span></span>
+<span id="L30" class="Ln"><span class="cp" >#</span><span class="cp" >endif</span></span>
+<span id="L31" class="Ln"></span>
+<span id="L32" class="Ln"><span class="cp" >#</span><span class="cp" >ifdef</span> <span class="cp" >__GNUC__</span></span>
+<span id="L33" class="Ln">  <span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >CINDEX_DEPRECATED</span> <span class="cp" >__attribute__</span><span class="cp" >(</span><span class="cp" >(</span><span class="cp" >deprecated</span><span class="cp" >)</span><span class="cp" >)</span></span>
+<span id="L34" class="Ln"><span class="cp" >#</span><span class="cp" >else</span></span>
+<span id="L35" class="Ln">  <span class="cp" >#</span><span class="cp" >ifdef</span> <span class="cp" >_MSC_VER</span></span>
+<span id="L36" class="Ln">    <span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >CINDEX_DEPRECATED</span> <span class="cp" >__declspec</span><span class="cp" >(</span><span class="cp" >deprecated</span><span class="cp" >)</span></span>
+<span id="L37" class="Ln">  <span class="cp" >#</span><span class="cp" >else</span></span>
+<span id="L38" class="Ln">    <span class="cp" >#</span><span class="cp" >define</span> <span class="cp" >CINDEX_DEPRECATED</span></span>
+<span id="L39" class="Ln">  <span class="cp" >#</span><span class="cp" >endif</span></span>
+<span id="L40" class="Ln"><span class="cp" >#</span><span class="cp" >endif</span></span>
+<span id="L41" class="Ln"></span>
+<span id="L42" class="Ln"><span class="cp" >#</span><span class="cp" >ifdef</span> <span class="cp" >__cplusplus</span></span>
+<span id="L43" class="Ln"><span class="p" >}</span></span>
+<span id="L44" class="Ln"><span class="cp" >#</span><span class="cp" >endif</span></span>
+<span id="L45" class="Ln"><span class="cp" >#</span><span class="cp" >endif</span></span>
+<span id="L46" class="Ln"><span class="cp" ></span>
+</span></pre></div>
+        <script src="../../../code.js"></script>
+    </body>
+</html>
